@@ -723,7 +723,15 @@
             </div>
         </div>
 
-        <input type="file" id="imageInput" />
+        <input type="file" id="imageInput" accept="image/*" style="display: none;" />
+        
+        <!-- Image Upload Button -->
+        <div class="button-section" style="padding: 0 16px; margin-top: 8px;">
+            <button type="button" class="submit-btn" style="background-color: #fbe10a; opacity: 0.8;" onclick="document.getElementById('imageInput').click()">
+                📸 Տեղաբերել լուսանկար
+            </button>
+            <small id="imageStatus" style="text-align: center; color: #fbe10a; font-size: 12px; margin-top: 4px;"></small>
+        </div>
 
         <!-- Submit Button -->
         <div class="button-section">
@@ -774,31 +782,80 @@
     }
 
     function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-            });
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+        });
+    }
+
+    // Handle image file selection
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const imageStatus = document.getElementById('imageStatus');
+        
+        if (file) {
+            const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                imageStatus.textContent = '❌ Invalid file type. Please upload an image.';
+                event.target.value = '';
+                return;
+            }
+            
+            const maxSizeMB = 5;
+            if (file.size > maxSizeMB * 1024 * 1024) {
+                imageStatus.textContent = `❌ File too large. Max ${maxSizeMB}MB allowed.`;
+                event.target.value = '';
+                return;
+            }
+            
+            const sizeMB = (file.size / 1024 / 1024).toFixed(2);
+            imageStatus.textContent = `✅ Image selected: ${file.name} (${sizeMB}MB)`;
+        } else {
+            imageStatus.textContent = '';
         }
+    });
 
 
     async function sendData() {
         const url = "/api/data";
+        const submitBtn = document.querySelector(".submit-btn");
+        const msgDiv = document.getElementById("msg");
 
-        let answer1 = collectData('[data-across="1"]').toLowerCase()
-        let answer2 = collectData('[data-down="2"]').toLowerCase()
-        let answer3 = collectData('[data-across="3"]').toLowerCase()
+        // Validate ID
+        const userId = document.querySelector("#id-number")?.value?.trim();
+        if (!userId) {
+            msgDiv.textContent = '❌ Please enter your ID';
+            msgDiv.style.color = '#ff6b6b';
+            return;
+        }
 
-          const file = document.querySelector("#imageInput")?.files?.[0];
+        // Collect crossword answers
+        let answer1 = collectData('[data-across="1"]').toLowerCase();
+        let answer2 = collectData('[data-down="2"]').toLowerCase();
+        let answer3 = collectData('[data-across="3"]').toLowerCase();
 
+        // Get image file
+        const file = document.querySelector("#imageInput")?.files?.[0];
         let imageBase64 = "";
+        
         if (file) {
-            imageBase64 = await fileToBase64(file);
+            try {
+                imageBase64 = await fileToBase64(file);
+                console.log('Image successfully converted to base64');
+            } catch (err) {
+                msgDiv.textContent = '❌ Error processing image. Please try again.';
+                msgDiv.style.color = '#ff6b6b';
+                console.error('Error converting image:', err);
+                return;
+            }
+        } else {
+            console.log('No image selected - proceeding without image');
         }
 
         const data = {
-            userId: document.querySelector("#id-number")?.value || "",
+            userId: userId,
             answer1,
             answer2,
             answer3,
@@ -806,24 +863,36 @@
             image: imageBase64
         };
 
-        const body = new URLSearchParams(data).toString();
+        // Disable button during submission
+        submitBtn.disabled = true;
+        msgDiv.textContent = '⏳ Submitting...';
+        msgDiv.style.color = '#fbe10a';
 
         try {
             const res = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                    "Content-Type": "application/json"
                 },
-                body: body
+                body: JSON.stringify(data)
             });
 
-            const text = await res.text();
+            if (!res.ok) {
+                throw new Error(`HTTP error! status: ${res.status}`);
+            }
+
+            const responseData = await res.json();
+            console.log('Server response:', responseData);
+
+            // Show success message
             document.querySelector(".landing-page").style.display = "none";
             document.querySelector(".success-massage-block").style.display = "flex";
 
         } catch (err) {
             console.error("Error:", err);
-
+            msgDiv.textContent = '❌ Error submitting data. Please try again.';
+            msgDiv.style.color = '#ff6b6b';
+            submitBtn.disabled = false;
         }
     }
 </script>
