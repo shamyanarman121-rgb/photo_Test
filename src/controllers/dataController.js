@@ -36,11 +36,18 @@ const saveBase64Image = (base64String, filename) => {
 const processData = async (req, res) => {
   try {
     const data = req.body;
+    
+    // Validate required fields
+    if (!data.userId) {
+      return res.status(400).json({ message: 'Missing required field: userId' });
+    }
+    
     const imageSizeMB = data.image ? (data.image.length / 1024 / 1024).toFixed(2) : 0;
     console.log("Data received from client:", { 
       userId: data.userId, 
       hasImage: !!data.image,
-      imageSizeMB: imageSizeMB
+      imageSizeMB: imageSizeMB,
+      answers: { answer1: data.answer1, answer2: data.answer2, answer3: data.answer3 }
     });
     
     // Handle base64 image
@@ -48,9 +55,20 @@ const processData = async (req, res) => {
     if (data.image && data.image !== '') {
       console.log(`Processing image of size: ${imageSizeMB} MB`);
       imagePath = saveBase64Image(data.image, data.userId || 'image');
+      if (!imagePath) {
+        console.warn('Image processing failed but continuing with request');
+      }
     }
     
     // Prepare data to send to external API (WITHOUT the base64 string to reduce payload)
+    // Generate image URL from the saved path
+    let imageUrl = null;
+    if (imagePath) {
+      // Extract just the filename from the full path
+      const filename = imagePath.split('\\').pop() || imagePath.split('/').pop();
+      imageUrl = `${process.env.SERVER_URL || 'http://localhost:3000'}/api/image/${filename}`;
+    }
+    
     const dataToSend = {
       userId: data.userId,
       answer1: data.answer1,
@@ -58,13 +76,17 @@ const processData = async (req, res) => {
       answer3: data.answer3,
       ts: data.ts,
       imagePath: imagePath,
+      imageUrl: imageUrl,
       imageReceived: !!data.image
     };
     
-    console.log("Sending to external API:", dataToSend);
+    console.log("Sending to external API:", { 
+      ...dataToSend,
+      imageUrl: imageUrl ? '✓ Generated' : '✗ Not generated'
+    });
     
     // Replace with the actual external API URL
-    const externalApiUrl = 'https://totogaming.app.n8n.cloud/webhook/8bd18292-f8d4-46a0-80e9-e463ef8f457a'; 
+    const externalApiUrl = "https://totogaming.app.n8n.cloud/webhook/8bd18292-f8d4-46a0-80e9-e463ef8f457a" 
 
     const response = await axios.post(externalApiUrl, dataToSend, {
       timeout: 30000
@@ -74,6 +96,7 @@ const processData = async (req, res) => {
     res.status(200).json({ 
       message: 'Data processed successfully', 
       imagePath: imagePath,
+      imageUrl: imageUrl,
       response: response.data 
     });
   } catch (error) {
