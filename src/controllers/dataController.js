@@ -18,13 +18,19 @@ const processData = async (req, res) => {
     });
     
     // Prepare data to send to external API with base64 image
+    let cleanImage = null;
+    if (data.image) {
+      // Remove data URI prefix (e.g., "data:image/png;base64,")
+      cleanImage = data.image.replace(/^data:image\/\w+;base64,/, '');
+    }
+    
     const dataToSend = {
       userId: data.userId,
       answer1: data.answer1,
       answer2: data.answer2,
       answer3: data.answer3,
       ts: data.ts,
-      image: data.image || null,
+      image: cleanImage,
       imageReceived: !!data.image
     };
     
