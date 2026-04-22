@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="hy">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Սմարտամսյակ - Mobile Casino</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link  href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Roboto+Condensed:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        .success-massage-block {
+            background: #F25728;
+            color: #FFFFFF;
+            display: none;
+            min-height: 100vh;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/success-top.png"),
+                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/success-bottom.png") #f25728;
+            background-position: top center, bottom center;
+            background-repeat: no-repeat;
+            background-size: 100% auto;
+
+            h2 {
+
+                font-weight: 500;
+                font-size: 28px;
+                line-height: 42px;
+                text-align: center;
+                text-transform: uppercase;
+                margin-bottom: 8px;
+                letter-spacing: 1px;
+            }
+
+            p {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 21px;
+                letter-spacing: 1px;
+            }
+        }
+
+        .crossword {
+            display: flex;
+            flex-direction: column-reverse;
+            width: 100%;
+        }
+
+        .crossword-clues {
+            font-size: 14px;
+        }
+
+        .crossword-buttons {
+            clear: both;
+            text-align: center;
+            padding-top: 1em;
+        }
+
+        .crossword-buttons button {
+            margin: 0 0.5em;
+            min-width: 200px;
+        }
+
+        table.crossword-grid {
+            width: 100%;
+            max-width: 100%;
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        .grid-row {
+            clear: left;
+        }
+
+        .grid-square {
+            position: relative;
+            background-clip: padding-box;
+        }
+
+        .grid-square:after {
+            content: '';
+            display: block;
+            margin-top: 100%;
+        }
+
+        .grid-square.active {
+            /* border: 2px solid black; */
+            position: relative;
+            width: auto;
+            height: auto;
+            background-color: #f25728;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+
+
+
+        .grid-square .word-label {
+            position: absolute;
+            /* top: 6px;
+            left: 6px; */
+            top: -6px;
+            left: -6px;
+            width: 35px;
+            height: 35px;
+            background-color: #fbe10a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 45px;
+            color: #f25728;
+            text-transform: uppercase;
+            padding: 9.744px;
+            transition: 0.5s ease-out;
+            transform: scale(0.4);
+        }
+
+
+        .id-input:user-invalid {
+            border: 2px solid #ff3b3b;
+        }
+
+        .id-input:user-valid {
+            border: 2px solid #055828;
+        }
+
+      
+
+        small {
+            color: white;
+        }
+
+        .grid-square input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-size: 1.2em;
+            font-size: calc(10px + .5vw);
+            font-weight: 600;
+            border: 0;
+            padding: 0;
+            text-transform: uppercase;
+            border-radius: 8px;
+            background: transparent;
+            border: 2px solid white;
+            z-index: 1;
+        }
+
+        .crossword-clues {
+            display: none;
+        }
+
+        .crossword-clues li {
+            position: relative;
+        }
+
+        .crossword-clues li label {
+            display: block;
+            font-weight: normal;
+            cursor: pointer;
+        }
+
+        .crossword-clues li.active {
+            background: #ffff99;
+        }
+
+        .crossword-clues li.correct {
+            background: transparent;
+            color: green;
+            text-decoration: line-through;
+        }
+
+        .crossword-clues li.correct.active {
+            background: #dff082;
+        }
+
+        .crossword-clues li.correct label:before {
+            content: "\f00c";
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            position: absolute;
+            left: 0;
+            top: 0.1em;
+        }
+
+        .crossword-clues a.hint {
+            display: none;
+        }
+
+        .show-hints.crossword-clues a.hint {
+            display: inline;
+        }
+
+        .clue-tooltip {
+            position: absolute;
+            z-index: 10;
+            background: rgba(255, 196, 35, 0.9);
+            padding: 4px 10px;
+            margin-bottom: 10px;
+            transform: translateY(-100%);
+            max-width: 90vw;
+            display: none;
+        }
+
+        .clue-tooltip .clue-tooltip-arrow {
+            display: block;
+            border: 8px solid transparent;
+            border-top-color: rgba(255, 196, 35, 0.9);
+            border-bottom: none;
+            position: absolute;
+            top: 100%;
+        }
+
+
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+        }
+
+        /* Container */
+        .container {
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        .landing-page {
+            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/bg-top.webp"),
+                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/bg-bottom-casino.webp") #f25728;
+            background-size: contain;
+            background-position: top center, bottom center;
+            background-repeat: no-repeat;
+            padding: 46px 0 94px;
+        }
+
+
+        .deco-img-1 {
+            position: absolute;
+            top: -39px;
+            left: 228px;
+            width: 205px;
+            height: 137px;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .deco-img-2 {
+            position: absolute;
+            top: -30px;
+            left: 148px;
+            width: 131px;
+            height: 87px;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        .deco-img-3 {
+            position: absolute;
+            top: 61px;
+            left: 307px;
+            width: 96px;
+            height: 64px;
+            object-fit: cover;
+            pointer-events: none;
+        }
+
+        /* Main Content */
+        .content {
+            position: absolute;
+            top: 46px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-inner {
+            width: 343px;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        /* Clues Section */
+        .clues-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 0 16px 20px 16px;
+        }
+
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 28px;
+            line-height: 42px;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0;
+        }
+
+        .clue-item {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .clue-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: #fbe10a;
+            border-radius: 12px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 24px;
+            line-height: 36px;
+            color: #f25728;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            padding: 9.744px;
+        }
+
+        .clue-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            color: white;
+            letter-spacing: 0.28px;
+            width: 304px;
+            /* flex-shrink: 0; */
+        }
+
+        /* Crossword Grid */
+        .crossword-section {
+            background: #E2552B;
+
+            overflow: hidden;
+            position: relative;
+            padding: 12px 0;
+            width: 100%;
+        }
+
+        .crossword-row {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 2px;
+        }
+
+        .crossword-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .cell {
+            position: relative;
+            width: 47px;
+            height: 47px;
+            background-color: #f25728;
+            border-radius: 8px;
+            border: 2px solid white;
+            flex-shrink: 0;
+            box-shadow: inset 0px -4px 18px 0px rgba(194, 65, 27, 0.25),
+                inset 0px 4px 3px 0px #cc4016;
+        }
+
+        .cell-empty {
+            width: 47px;
+            height: 47px;
+            flex-shrink: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .cell-marker {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: 35px;
+            height: 35px;
+            background-color: #fbe10a;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 30px;
+            line-height: 45px;
+            color: #f25728;
+            text-transform: uppercase;
+            padding: 9.744px;
+        }
+
+        .marker-3 {
+            left: 6px;
+        }
+
+        /* Input Section */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 20px 16px;
+        }
+
+        .input-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            color: white;
+            letter-spacing: 0.28px;
+            width: 304px;
+        }
+
+        .input-wrapper {
+            width: 100%;
+            height: 50px;
+        }
+
+        .id-input {
+            width: 100%;
+            height: 50px;
+            background-color: #f3754f;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 10px 24px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 21px;
+            color: white;
+            text-transform: uppercase;
+            outline: none;
+        }
+
+        .id-input::placeholder {
+            color: white;
+        }
+
+        /* Button Section */
+        .button-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding: 12px 16px 0 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 50px;
+            background-color: #fbe10a;
+            border: none;
+            border-radius: 16px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 21px;
+            color: #300f05;
+            text-align: center;
+            letter-spacing: -0.408px;
+            cursor: pointer;
+            opacity: 1;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+        }
+
+        .submit-btn:disabled {
+            cursor: not-allowed;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+            padding: 8px;
+        }
+
+        .age-badge {
+            position: relative;
+            width: 31px;
+            height: 30.205px;
+            flex-shrink: 0;
+        }
+
+        .age-circle {
+            position: absolute;
+            left: -4.02px;
+            top: -3.67px;
+            width: 36.912px;
+            height: 36.912px;
+            transform: rotate(28.08deg);
+        }
+
+        .age-text {
+            position: absolute;
+            left: 6.25px;
+            top: 2.38px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 400;
+            font-size: 16.398px;
+            line-height: 24.596px;
+            color: white;
+            letter-spacing: 0.328px;
+            white-space: nowrap;
+            font-stretch: 75%;
+        }
+
+        .age-plus {
+            position: absolute;
+            left: 24.51px;
+            top: 11.93px;
+            width: 6.341px;
+            height: 6.341px;
+        }
+
+        .disclaimer-text {
+            flex: 1;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 16.5px;
+            color: white;
+            letter-spacing: 0.22px;
+        }
+
+        /* Bottom Background with Casino Elements */
+        .bg-bottom {
+            position: relative;
+            width: 100%;
+            height: 94px;
+            background-color: #f25728;
+            overflow: hidden;
+            margin-top: auto;
+        }
+
+        .casino-deco-1 {
+            position: absolute;
+            left: -31px;
+            top: 10px;
+            width: 174.67%;
+            height: 140px;
+            max-width: none;
+        }
+
+        .casino-deco-2 {
+            position: absolute;
+            bottom: -98.52px;
+            left: 182px;
+            width: 270.071px;
+            height: 180.047px;
+            object-fit: cover;
+            transform: rotate(13.87deg);
+            transform-origin: center;
+        }
+
+        .casino-deco-3 {
+            position: absolute;
+            left: 211px;
+            top: 47px;
+            width: 103.5px;
+            height: 69px;
+            object-fit: cover;
+        }
+
+        .casino-deco-4 {
+            position: absolute;
+            left: 153px;
+            top: 34px;
+            width: 69px;
+            height: 46px;
+            object-fit: cover;
+        }
+
+        .casino-deco-5 {
+            position: absolute;
+            left: 115px;
+            top: 48px;
+            width: 79px;
+            height: 53px;
+            object-fit: cover;
+        }
+
+        .casino-vector {
+            position: absolute;
+            left: 216.37px;
+            top: 57.22px;
+            width: 92.852px;
+            height: 44.041px;
+        }
+
+        #msg {
+            color: #FFFFFF;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 360px) and (max-width: 768px) {
+            /* .container {
+        max-width: 768px;
+        margin: 0 auto;
+    } */
+
+            .content {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 374px) {
+            .content-inner {
+                width: calc(100% - 32px);
+                margin: 0 16px;
+            }
+
+            .crossword-section {
+                width: 100%;
+            }
+
+            .clue-text,
+            .input-label {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 375px) and (max-width: 768px) {
+
+            .bg-top,
+            .bg-middle {
+                left: 50%;
+                transform: translateX(-50%);
+                max-width: 768px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="landing-page">
+
+
+
+        <!-- Main Content -->
+
+        <!-- Title and Clues -->
+        <div class="clues-section">
+
+            <h1 class="title">ՍՄԱՐՏԱՄՍՅԱԿ</h1>
+
+            <div class="clue-item">
+                <div class="clue-number">1</div>
+                <p class="clue-text">
+                    Հանրահայտ Լայվ Կազինո խաղ, որտեղ պայքարն ընթանում է «Խաղացողի» և «Բանկիրի» միջև:
+                </p>
+            </div>
+
+            <div class="clue-item">
+                <div class="clue-number">2</div>
+                <p class="clue-text">
+                    Հատուկ սիմվոլ սլոթերում, որը կարող է փոխարինել գրեթե ցանկացած այլ նշանի՝ հաղթական համակցություն կազմելու համար:
+                </p>
+            </div>
+
+            <div class="clue-item">
+                <div class="clue-number">3</div>
+                <p class="clue-text">Գործողություն, երբ խաղացողը գումար է մուտքագրում իր խաղային հաշվին:</p>
+            </div>
+
+        </div>
+
+
+
+        <!-- Crossword Grid -->
+        <div class="crossword-section">
+
+            <div class="container">
+                <div class="crossword"></div>
+            </div>
+        </div>
+
+        <!-- ID Input Section -->
+        <div class="input-section">
+            <label class="input-label" for="id-number">Լրացրու քո ID-ն</label>
+
+            <div class="input-wrapper">
+                <input type="text" id="id-number" class="id-input" placeholder="ID" maxlength="9" inputmode="numeric"
+                    pattern="[1-9][0-9]{8}" required>
+                <small class="error-message"></small>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="button-section">
+            <button class="submit-btn" onclick="sendData()">Ուղարկել</button>
+            <div id="msg" class="msg"></div>
+
+            <!-- Disclaimer -->
+            <div class="disclaimer">
+                <div class="age-badge">
+                    <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M26.4768 21.2038C24.9183 24.1257 22.3501 26.3809 19.2513 27.5486C16.1524 28.7164 12.7346 28.7171 9.63537 27.5505C6.5361 26.3839 3.96703 24.1298 2.40737 21.2085C0.847718 18.2872 0.403989 14.8983 1.15896 11.674C1.91393 8.44966 3.81604 5.61005 6.51048 3.68486C9.20491 1.75967 12.5077 0.88037 15.8027 1.21098C19.0977 1.5416 22.1599 3.05955 24.4182 5.48168C25.4372 6.5747 26.2612 7.81816 26.8677 9.15788"
+                            stroke="white" stroke-width="1.07889" />
+                        <path
+                            d="M13.7071 19.1676V20.3846H7.18972V19.3197L10.4004 15.0682C10.7954 14.5451 11.0969 14.1021 11.3051 13.7391C11.5133 13.3708 11.6574 13.0425 11.7375 12.7543C11.8175 12.4607 11.8576 12.1618 11.8576 11.8575C11.8576 11.4732 11.7962 11.1263 11.6734 10.8167C11.5507 10.5018 11.3718 10.2509 11.137 10.0641C10.9021 9.87724 10.6192 9.78383 10.2883 9.78383C9.85592 9.78383 9.50096 9.88525 9.2234 10.0881C8.95117 10.2856 8.75101 10.5631 8.6229 10.9208C8.4948 11.2784 8.43074 11.6894 8.43074 12.1538H7.01357C7.01357 11.4972 7.13367 10.8967 7.37387 10.3523C7.61941 9.80785 7.98504 9.37549 8.47078 9.05523C8.95651 8.72963 9.56234 8.56683 10.2883 8.56683C10.9128 8.56683 11.4466 8.6976 11.8896 8.95915C12.338 9.21536 12.6796 9.57833 12.9144 10.048C13.1546 10.5124 13.2747 11.0569 13.2747 11.6814C13.2747 12.023 13.2267 12.37 13.1306 12.7223C13.0399 13.0692 12.9118 13.4162 12.7463 13.7631C12.5862 14.1101 12.3967 14.4517 12.1778 14.788C11.959 15.1242 11.7241 15.4552 11.4733 15.7808L8.88712 19.1676H13.7071ZM19.8398 8.66291V20.3846H18.4227V10.5124L15.9726 11.6013V10.2642L19.6237 8.66291H19.8398Z"
+                            fill="white" />
+                        <path
+                            d="M30.8476 14.4656V15.5064H24.5067V14.4656H30.8476ZM28.1586 11.9232V18.2641H27.1169V11.9232H28.1586Z"
+                            fill="white" />
+                    </svg>
+                </div>
+                <p class="disclaimer-text">Նախազգուշացում. խաղին մասնակցելով` կարող եք կրել նյութական վնասներ: Ոչ սթափ
+                    կամ հոգեճնշող վիճակում խաղալն անթույլատրելի է:</p>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="success-massage-block">
+        <h2>ԳՆԱԱԱ՜Ց...</h2>
+        <p>Ապրե՛ս, պատասխանդ ընդունված է</p>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+
+    function collectData(inputSelector) {
+        let answer = ""
+
+        const answerValue = document.querySelectorAll(`${inputSelector}`)
+        answerValue.forEach(item => {
+            answer += item.value
+        })
+
+        return answer
+    }
+
+
+    async function sendData() {
+        const url = "/api/data";
+
+        let answer1 = collectData('[data-across="1"]').toLowerCase()
+        let answer2 = collectData('[data-down="2"]').toLowerCase()
+        let answer3 = collectData('[data-across="3"]').toLowerCase()
+
+        const data = {
+            userId: document.querySelector("#id-number")?.value || "",
+            answer1,
+            answer2,
+            answer3,
+            ts: new Date().toISOString()
+        };
+
+        const body = new URLSearchParams(data).toString();
+
+        try {
+            const res = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
+                },
+                body: body
+            });
+
+            const text = await res.text();
+            document.querySelector(".landing-page").style.display = "none";
+            document.querySelector(".success-massage-block").style.display = "flex";
+
+        } catch (err) {
+            console.error("Error:", err);
+
+        }
+    }
+</script>
+
+<script>
+
+    const generateStars = (n)=> '*'.repeat(n)
+
+    var words = [
+        { number: 1, direction: 'across', row: 2, column: 1, clue: '', answer: generateStars(7), hint: 'http://www.angelo.edu/asu_facts/history.php' },
+        { number: 2, direction: 'down', row: 1, column: 2, clue: '', answer: generateStars(5), hint: 'http://www.angelo.edu/services/ticket_office/softball.php' },
+        { number: 3, direction: 'across', row: 5, column: 2, clue: '', answer: generateStars(7), hint: 'http://www.angelo.edu/services/specialevents/hhuc.php' },
+
+    ];
+
+    // Set global variables
+    var gridSize = [8, 5];     // first width second argument height
+    var direction = 'across';   // set initial direction to 'across'
+    var markCorrect = true;     // indicates ability for answers to be marked correct. will be set to false if "show answers" is clicked
+    var successShown = false;   // indicates whether the success modal has been shown
+    var $clueTooltip = $('<div class="clue-tooltip invisible"><div class="clue-tooltip-arrow"></div><div class="clue-tooltip-text"></div></div>').appendTo('.crossword');
+
+    // set up the base grid
+    var $crosswordPuzzle = $('<div class="crossword-puzzle col-md-8 col-lg-9"></div>');
+    var $table = $('<table class="crossword-grid"></table>');
+    for (i = 0; i < gridSize[1]; i++) {
+        var $row = $('<tr class="grid-row"></tr>');
+        for (j = 0; j < gridSize[0]; j++) {
+            $square = $('<td class="grid-square"></td>');
+            $square.appendTo($row);
+        }
+        $row.appendTo($table);
+        $table.appendTo($crosswordPuzzle);
+        $crosswordPuzzle.appendTo('.crossword');
+    }
+
+    // Add the fields to the grid
+    for (i = 0; i < words.length; i++) {
+        var row = words[i].row;
+        var column = words[i].column;
+        for (j = 0; j < words[i].answer.length; j++) {
+            var $square = $('.grid-row').eq(row - 1).find('.grid-square').eq(column - 1);
+            var title = words[i].clue + ', letter ' + (j + 1) + ' of ' + words[i].answer.length;
+            var id = (words[i].direction == 'across' ? 'a' : 'd') + '-' + words[i].number + '-' + (j + 1);
+            if (j == 0 && $square.find('.word-label').length == 0) {
+                $('<span class="word-label">' + words[i].number + '</span>').appendTo($square);
+            }
+            if ($square.find('input').length == 0) {
+                var $input = $('<input type="text" class="letter"  placeholder=" " title="' + title + '" id="' + id + '" maxlength="1" />');
+                if (words[i].direction == 'across') {
+                    $input.attr('data-across', words[i].number);
+                    $input.attr('data-across-clue', words[i].clue);
+                } else {
+                    $input.attr('data-down', words[i].number);
+                    $input.attr('data-down-clue', words[i].clue);
+                }
+                $input.data('letter', words[i].answer[j]);
+                $input.appendTo($square);
+                $square.addClass('active');
+            } else {
+                var $input = $square.find('input');
+                $input.attr('title', $input.attr('title') + '; ' + title);
+                $input.attr('id', $input.attr('id') + '+' + id);
+                if (words[i].direction == 'across') {
+                    $input.attr('data-across', words[i].number);
+                    $input.attr('data-across-clue', words[i].clue);
+                } else {
+                    $input.attr('data-down', words[i].number);
+                    $input.attr('data-down-clue', words[i].clue);
+                }
+            }
+            if (words[i].direction == 'down') {
+                row++;
+            } else {
+                column++;
+            }
+        }
+    }
+
+    // Add the clues to the page
+    var $crosswordClues = $('<div class="crossword-clues col-md-4 col-lg-3"><div class="row"></div></div>');
+    var $acrossClues = $('<div class="across-clues col-sm-6 col-md-12"><p><strong>Across</strong></p><ol></ol></div>');
+    var $downClues = $('<div class="down-clues col-sm-6 col-md-12"><p><strong>Down</strong></p><ol></ol></div>');
+    for (i = 0; i < words.length; i++) {
+        var $clue = $('<li value="' + words[i].number + '" data-direction="' + words[i].direction + '" data-clue="' + words[i].number + '"><label>' + words[i].clue + ' </label></li>');
+        $clue.find('label').attr('for', $('[data-' + words[i].direction + '=' + words[i].number + ']').eq(0).attr('id'));
+        $clue.on('click', function () {
+            direction = $(this).data('direction');
+        })
+        if (words[i].hint.length > 0 && words[i].hint != '') {
+            $('<a class="hint" href="' + words[i].hint + '" target="_blank" title="Hint for ' + words[i].number + ' ' + words[i].direction + '">(Hint)</a>').appendTo($clue.find('label'));
+        }
+        if (words[i].direction == 'across') {
+            $clue.appendTo($acrossClues.find('ol'));
+        } else {
+            $clue.appendTo($downClues.find('ol'));
+        }
+    }
+    $acrossClues.appendTo($crosswordClues.find('.row'));
+    $downClues.appendTo($crosswordClues.find('.row'));
+    $crosswordClues.appendTo('.crossword');
+
+    // Add the hints, reset, and show answers buttons
+    // var $puzzleButtons = $('<div class="crossword-buttons"></div>');
+    var $hintsButton = $('<button class="btn btn-default">Show Hints</button>');
+    $hintsButton.on('click', function (e) {
+        e.preventDefault();
+        $('.crossword-clues').toggleClass('show-hints');
+        $(this).text($(this).text() == 'Show Hints' ? 'Hide Hints' : 'Show Hints');
+    });
+    // $hintsButton.appendTo($puzzleButtons);
+    var $resetButton = $('<button class="btn btn-default">Clear Puzzle</button>');
+    $resetButton.on('click', function (e) {
+        e.preventDefault();
+        $('input.letter').val('').parent('.grid-square').removeClass('correct-down correct-across');
+        $('.crossword-clues li').removeClass('correct');
+        markCorrect = true;
+    });
+    // $resetButton.appendTo($puzzleButtons);
+    var $solveButton = $('<button class="show-answers btn btn-default">Show Answers</button>');
+    $solveButton.on('click', function (e) {
+        e.preventDefault();
+        $('input.letter').each(function () {
+            $(this).val($(this).data('letter'));
+        });
+        markCorrect = false;
+    });
+    //     $solveButton.appendTo($puzzleButtons);
+    // $puzzleButtons.appendTo('.crossword');
+
+    // Add the success modal
+    // var $modal = $('<div class="modal fade" id="success-modal" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Congratulations!</h4></div><div class="modal-body"><p>You have finished the puzzle.</p></div></div></div></div>');
+    // $modal.appendTo('body');
+
+    // When a square is focused, highlight the other squares in that word and the clue, and show the tooltip
+    $('input.letter').on('focus', function () {
+        var $current = $(this);
+        $current.select();
+        $current[0].setSelectionRange(0, 10);
+        getDirection($current);
+        $('[data-' + direction + '=' + $current.data(direction) + ']').parent('.grid-square').addClass('current-word');
+        $('.crossword-clues li').removeClass('active');
+        $('.crossword-clues li[data-direction=' + direction + '][data-clue=' + $(this).data(direction) + ']').addClass('active');
+        $clueTooltip.css({ 'left': tooltipPosition($current).left + 'px', 'top': tooltipPosition($current).top - 10 + 'px' }).removeClass('invisible').find('.clue-tooltip-arrow').css('left', tooltipPosition($current).offset + 'px');
+    })
+
+    // When a square is blurred, remove highlight from squares and clue
+    $('input.letter').on('blur', function () {
+        $('.grid-square').removeClass('current-word');
+        $('.crossword-clues li').removeClass('active');
+        $clueTooltip.addClass('invisible');
+    })
+
+   
+
+    $('input.letter').on('input', function (e) {
+        var $current = $(this);
+
+        // Allow only 1 character
+        this.value = this.value.slice(0, 1);
+
+        if (this.value !== '') {
+            if (direction === 'across') {
+                if (getNextLetter($current)) {
+                    getNextLetter($current).focus();
+                }
+            } else if (direction === 'down') {
+                if (getNextLetter($current)) {
+                    getNextLetter($current).focus();
+                }
+            }
+        }
+
+        if (markCorrect) {
+            checkWord($current);
+        }
+    });
+
+    // Tab and Shift/Tab move to next and previous words
+    $('input.letter').on('keydown', function (e) {
+        var $current = $(this);
+        if (e.which == 9) {       // tab
+            e.preventDefault();
+            if (e.shiftKey) {       // shift/tab
+                getPrevWord($current).focus();
+            } else {
+                getNextWord($current).focus();
+            }
+        } else if (e.which == 8) {        // backspace
+            e.preventDefault();
+            if ($(this).val().length > 0) {
+                $(this).val('');
+            } else {
+                if (getPrevLetter($current)) {
+                    getPrevLetter($current).focus().val('');
+                }
+            }
+        } else if ((e.which >= 48 && e.which <= 90) || (e.which >= 96 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || (e.which >= 219 && e.which <= 222)) {    // typeable characters move to the next square in the word if it exists
+            e.preventDefault();
+            $current.val(String.fromCharCode(e.which));
+            if (getNextLetter($current)) {
+                getNextLetter($current).focus();
+            }
+        }
+        if (markCorrect) {
+            checkWord($current);
+        };
+    })
+
+    // Check if all letters in selected word are correct
+    function checkWord($current) {
+        var correct;
+        var currentWord;
+        if ($current.is('[data-across]')) {
+            correct = 0;
+            currentWord = $current.data('across');
+            $('[data-across=' + currentWord + ']').each(function () {
+                if ($(this).val().toLowerCase() == $(this).data('letter').toLowerCase()) {
+                    correct += 1;
+                }
+            })
+            if (correct == $('[data-across=' + currentWord + ']').length) {
+                $('[data-across=' + currentWord + ']').parent('.grid-square').addClass('correct-across');
+                $('.crossword-clues li[data-direction=across][data-clue=' + currentWord + ']').addClass('correct');
+            } else {
+                $('[data-across=' + currentWord + ']').parent('.grid-square').removeClass('correct-across');
+                $('.crossword-clues li[data-direction=across][data-clue=' + currentWord + ']').removeClass('correct');
+            }
+        }
+        if ($current.is('[data-down]')) {
+            correct = 0;
+            currentWord = $current.data('down');
+            $('[data-down=' + currentWord + ']').each(function () {
+                if ($(this).val().toLowerCase() == $(this).data('letter').toLowerCase()) {
+                    correct += 1;
+                }
+            })
+            if (correct == $('[data-down=' + currentWord + ']').length) {
+                $('[data-down=' + currentWord + ']').parent('.grid-square').addClass('correct-down');
+                $('.crossword-clues li[data-direction=down][data-clue=' + currentWord + ']').addClass('correct');
+            } else {
+                $('[data-down=' + currentWord + ']').parent('.grid-square').removeClass('correct-down');
+                $('.crossword-clues li[data-direction=down][data-clue=' + currentWord + ']').removeClass('correct');
+            }
+        }
+        if ($('.grid-square.active:not([class*=correct])').length == 0 && !successShown) {
+            // $('#success-modal').modal();
+            successShown = true;
+        }
+    }
+
+    // Return the input of the first letter of the next word in the clues list
+    function getNextWord($current) {
+        var length = $('.crossword-clues li').length;
+        var index = $('.crossword-clues li').index($('.crossword-clues li.active'));
+        var nextWord;
+        if (index < length - 1) {
+            $nextWord = $('.crossword-clues li').eq(index + 1);
+        } else {
+            $nextWord = $('.crossword-clues li').eq(0);
+        }
+        direction = $nextWord.data('direction');
+        return $('[data-' + $nextWord.data('direction') + '=' + $nextWord.data('clue') + ']').eq(0);
+    }
+
+    // Return the input of the first letter of the previous word in the clues list
+    function getPrevWord($current) {
+        var length = $('.crossword-clues li').length;
+        var index = $('.crossword-clues li').index($('.crossword-clues li.active'));
+        var prevWord;
+        if (index > 0) {
+            $prevWord = $('.crossword-clues li').eq(index - 1);
+        } else {
+            $prevWord = $('.crossword-clues li').eq(length - 1);
+        }
+        direction = $prevWord.data('direction');
+        return $('[data-' + $prevWord.data('direction') + '=' + $prevWord.data('clue') + ']').eq(0);
+    }
+
+    // If there is a letter square before or after the current letter in the current direction, keep global direction the same, otherwise switch global direction
+    function getDirection($current) {
+        if (getPrevLetter($current) || getNextLetter($current)) {
+            direction = direction;
+        } else {
+            direction = (direction == 'across') ? 'down' : 'across';
+        }
+    }
+
+    // Return the input of the previous letter in the current word if it exists, otherwise return false
+    function getPrevLetter($current) {
+        var index = $('[data-' + direction + '=' + $current.data(direction) + ']').index($current);
+        if (index > 0) {
+            return $('[data-' + direction + '=' + $current.data(direction) + ']').eq(index - 1);
+        } else {
+            return false;
+        }
+    }
+
+    // Return the input of the next letter in the current word if it exists, otherwise return false
+    function getNextLetter($current) {
+        var length = $('[data-' + direction + '=' + $current.data(direction) + ']').length;
+        var index = $('[data-' + direction + '=' + $current.data(direction) + ']').index($current);
+        if (index < length - 1) {
+            return $('[data-' + direction + '=' + $current.data(direction) + ']').eq(index + 1);
+        } else {
+            return false;
+        }
+    }
+
+    // Return the top, left, and offset positions for tooltip placement
+    function tooltipPosition($current) {
+        var left = $('[data-' + direction + '=' + $current.data(direction) + ']').eq(0).offset().left - $('.crossword').offset().left;
+        var top = $('[data-' + direction + '=' + $current.data(direction) + ']').eq(0).offset().top - $('.crossword').offset().top;
+        $clueTooltip.find('.clue-tooltip-text').text($current.data(direction + '-clue'));
+        var right = left + $clueTooltip.outerWidth();
+        var offset = right - $('.crossword-puzzle').outerWidth();
+        offset = offset > 0 ? offset : 0;
+        left = left - offset;
+        return { 'left': left, 'top': top, 'offset': offset };
+    }
+
+
+    const input = document.getElementById("id-number");
+    const errorDiv = document.querySelector(".error-message");
+    const submitBtn = document.querySelector(".submit-btn");
+
+    submitBtn.disabled = true;
+
+    input.addEventListener("input", handleInput);
+    input.addEventListener("blur", validateID);
+
+    function handleInput(e) {
+        // Remove non-digits
+        e.target.value = e.target.value.replace(/\D/g, "");
+        validateID();
+    }
+
+    function validateID() {
+        const value = input.value;
+
+        input.setCustomValidity("");
+        errorDiv.textContent = "";
+
+        if (!value) {
+            input.setCustomValidity("Պահանջվում է ID։");
+            errorDiv.textContent = "Պահանջվում է ID և միայն թվեր։";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        if (value.length !== 9) {
+            input.setCustomValidity("ID-ն պետք է լինի ճիշտ 9 թվանշան։");
+            errorDiv.textContent = "ID-ն պետք է լինի ճիշտ 9 թվանշան։";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        if (value.startsWith("0")) {
+            input.setCustomValidity("ID-ն չի կարող սկսվել 0-ով։");
+            errorDiv.textContent = "ID-ն չի կարող սկսվել 0-ով։";
+            submitBtn.disabled = true;
+            return;
+        }
+
+        // valid
+        submitBtn.disabled = false;
+    }
+
+    // const wordLabels = document.querySelectorAll('.grid-square span.word-label')
+    // let last = wordLabels[0]
+    // last.style.width = "55px"
+    // last.style.left = "-13px"
+
+    // last.innerHTML = "2/3"
+
+
+</script>
+
+</html>
+
+
+
+
+
+
+
+
+
