@@ -1,21 +1,92 @@
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
+
+// Helper function to save base64 image to file
+const saveBase64Image = (base64String, filename) => {
+  try {
+    if (!base64String || base64String === '') {
+      return null;
+    }
+
+    // Extract base64 data (remove data URI prefix if present)
+    const base64Data = base64String.replace(/^data:image\/\w+;base64,/, '');
+    
+    // Create uploads directory if it doesn't exist
+    const uploadsDir = path.join(__dirname, '../../uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    
+    // Save the file
+    const timestamp = Date.now();
+    const fileExtension = base64String.includes('png') ? 'png' : 'jpg';
+    const filepath = path.join(uploadsDir, `${timestamp}-${filename}.${fileExtension}`);
+    
+    fs.writeFileSync(filepath, base64Data, 'base64');
+    console.log(`Image saved to: ${filepath}`);
+    
+    return filepath;
+  } catch (error) {
+    console.error('Error saving base64 image:', error);
+    return null;
+  }
+};
 
 const processData = async (req, res) => {
   try {
     const data = req.body;
-    console.log("Data received from client:", data);
+    const imageSizeMB = data.image ? (data.image.length / 1024 / 1024).toFixed(2) : 0;
+    console.log("Data received from client:", { 
+      userId: data.userId, 
+      hasImage: !!data.image,
+      imageSizeMB: imageSizeMB
+    });
+    
+    // Handle base64 image
+    let imagePath = null;
+    if (data.image && data.image !== '') {
+      console.log(`Processing image of size: ${imageSizeMB} MB`);
+      imagePath = saveBase64Image(data.image, data.userId || 'image');
+    }
+    
+    // Prepare data to send to external API (WITHOUT the base64 string to reduce payload)
+    const dataToSend = {
+      userId: data.userId,
+      answer1: data.answer1,
+      answer2: data.answer2,
+      answer3: data.answer3,
+      ts: data.ts,
+      imagePath: imagePath,
+      imageReceived: !!data.image
+    };
+    
+    console.log("Sending to external API:", dataToSend);
     
     // Replace with the actual external API URL
-    const externalApiUrl = 'https://totogaming.app.n8n.cloud/webhook/c8d1e40e-251c-454c-85d5-0810af198588'; 
+    const externalApiUrl = 'https://totogaming.app.n8n.cloud/webhook/1a8ee82d-e5b3-4d02-b72e-721586fb0d33'; 
 
-    const response = await axios.post(externalApiUrl, {
-      ...data,
+    const response = await axios.post(externalApiUrl, dataToSend, {
+      timeout: 30000
     });
 
-    res.status(200).json({ message: 'Data processed successfully', response: response.data });
+    console.log("External API response status:", response.status);
+    res.status(200).json({ 
+      message: 'Data processed successfully', 
+      imagePath: imagePath,
+      response: response.data 
+    });
   } catch (error) {
     console.error("Error processing data:", error.message);
-    res.status(500).json({ message: 'Internal server error', error: error.message });
+    if (error.response) {
+      console.error("External API error status:", error.response.status);
+      console.error("External API error data:", error.response.data);
+    }
+    res.status(500).json({ 
+      message: 'Internal server error', 
+      error: error.message,
+      apiStatus: error.response ? error.response.status : 'Unknown'
+    });
   }
 };
 
