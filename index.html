@@ -723,6 +723,8 @@
             </div>
         </div>
 
+        <input type="file" id="imageInput" />
+
         <!-- Submit Button -->
         <div class="button-section">
             <button class="submit-btn" onclick="sendData()">Ուղարկել</button>
@@ -771,6 +773,15 @@
         return answer
     }
 
+    function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+            });
+        }
+
 
     async function sendData() {
         const url = "/api/data";
@@ -779,12 +790,20 @@
         let answer2 = collectData('[data-down="2"]').toLowerCase()
         let answer3 = collectData('[data-across="3"]').toLowerCase()
 
+          const file = document.querySelector("#imageInput")?.files?.[0];
+
+        let imageBase64 = "";
+        if (file) {
+            imageBase64 = await fileToBase64(file);
+        }
+
         const data = {
             userId: document.querySelector("#id-number")?.value || "",
             answer1,
             answer2,
             answer3,
-            ts: new Date().toISOString()
+            ts: new Date().toISOString(),
+            image: imageBase64
         };
 
         const body = new URLSearchParams(data).toString();
