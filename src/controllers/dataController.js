@@ -64,7 +64,7 @@ const processData = async (req, res) => {
     console.log("Sending to external API:", dataToSend);
     
     // Replace with the actual external API URL
-    const externalApiUrl = 'https://totogaming.app.n8n.cloud/webhook-test/8bd18292-f8d4-46a0-80e9-e463ef8f457a'; 
+    const externalApiUrl = 'https://totogaming.app.n8n.cloud/webhook/8bd18292-f8d4-46a0-80e9-e463ef8f457a'; 
 
     const response = await axios.post(externalApiUrl, dataToSend, {
       timeout: 30000
