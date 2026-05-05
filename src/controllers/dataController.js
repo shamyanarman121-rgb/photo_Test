@@ -14,7 +14,7 @@ const processData = async (req, res) => {
       userId: data.userId, 
       hasImage: !!data.image,
       imageSizeMB: imageSizeMB,
-      answers: { answer1: data.answer1, answer2: data.answer2, answer3: data.answer3 }
+    
     });
     
     // Prepare data to send to external API with base64 image
@@ -26,9 +26,6 @@ const processData = async (req, res) => {
     
     const dataToSend = {
       userId: data.userId,
-      answer1: data.answer1,
-      answer2: data.answer2,
-      answer3: data.answer3,
       ts: data.ts,
       image: cleanImage,
       imageReceived: !!data.image
@@ -38,7 +35,6 @@ const processData = async (req, res) => {
       userId: data.userId,
       hasImage: !!data.image,
       imageSizeMB: imageSizeMB,
-      answers: { answer1: data.answer1, answer2: data.answer2, answer3: data.answer3 }
     });
     
     // Replace with the actual external API URL
