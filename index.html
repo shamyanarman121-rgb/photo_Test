@@ -19,8 +19,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/success-top.png"),
-                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/success-bottom.png") #f25728;
+            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/sport-app-telegram/media/images/bg-top.png"),
+                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/sport-app-telegram/media/images/bg-bottom-sport.webp") #f25728;
             background-position: top center, bottom center;
             background-repeat: no-repeat;
             background-size: 100% auto;
@@ -250,12 +250,16 @@
         }
 
         .landing-page {
-            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/bg-top.webp"),
-                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/crossword/media/images/bg-bottom-casino.webp") #f25728;
+            display: flex;
+    flex-direction: column;
+    justify-content: center;
+            background: url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/sport-app-telegram/media/images/bg-top.webp?5"),
+                url("https://cdn-pl.totogaming.am/plat/prd/img/partners/2/Promotion/sport-app-telegram/media/images/bg-bottom-sport.webp?5") #2D3588;
             background-size: contain;
             background-position: top center, bottom center;
             background-repeat: no-repeat;
-            padding: 46px 0 94px;
+            /* padding: 0  0 20px 0; */
+            height: 100vh;
         }
 
 
@@ -287,6 +291,18 @@
             height: 64px;
             object-fit: cover;
             pointer-events: none;
+        }
+
+        .title-section{
+            margin-bottom: 20px;
+        }
+
+         .title-section h1{
+           margin-bottom: 15px;
+        }
+
+        .title-section p{
+            color: #C5C5C5;
         }
 
         /* Main Content */
@@ -450,21 +466,21 @@
         .id-input {
             width: 100%;
             height: 50px;
-            background-color: #f3754f;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: #FFFFFF;
+            border: 1px solid #FFFFFF26;
             border-radius: 16px;
             padding: 10px 24px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 400;
             font-size: 14px;
             line-height: 21px;
-            color: white;
+            color: #000000;
             text-transform: uppercase;
             outline: none;
         }
 
         .id-input::placeholder {
-            color: white;
+            color: #777777;
         }
 
         /* Button Section */
@@ -475,10 +491,14 @@
             padding: 12px 16px 0 16px;
         }
 
-        .submit-btn {
+        .button-section:has(.upload-btn) {
+            margin-bottom: 140px;
+        }
+
+        .submit-btn,.upload-btn {
             width: 100%;
             height: 50px;
-            background-color: #fbe10a;
+            background-color: #EB430B;
             border: none;
             border-radius: 16px;
             padding: 10px;
@@ -486,11 +506,95 @@
             font-weight: 500;
             font-size: 14px;
             line-height: 21px;
-            color: #300f05;
+            color: #300F05;
             text-align: center;
             letter-spacing: -0.408px;
             cursor: pointer;
             opacity: 1;
+        }
+
+        .upload-btn {
+            background-color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 1px dashed #777777;
+            transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, margin 0.3s ease, padding 0.3s ease;
+            opacity: 1;
+            transform: scale(1);
+            max-height: 60px;
+            overflow: hidden;
+        }
+
+        .upload-btn span{
+            color: #777777;
+        }
+
+        .image-preview-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            background: white;
+            border: 1px dashed white;
+            color: #777777;
+            border-radius: 16px;
+            width: 100%;
+            transition: opacity 0.3s ease, transform 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin 0.3s ease;
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            max-height: 0;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .image-preview-row.show {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            max-height: 80px;
+            padding: 8px 24px;
+            margin-top: 0;
+        }
+
+        
+
+        .image-preview-row img {
+            width: 35px;
+            height: 35px;
+            /* object-fit: cover; */
+            border-radius: 8px;
+        }
+
+        .image-preview-row .preview-text {
+            flex: 1;
+            color: #777777;
+            font-size: 14px;
+            line-height: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .image-preview-row .clear-image {
+            background: transparent;
+            border: none;
+            color: #fbe10a;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 12px;
+        }
+
+        .button-section:has(.image-preview-row.show) > .upload-btn {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            max-height: 0;
+            margin: 0;
+            padding: 0;
         }
 
         .submit-btn:disabled {
@@ -675,46 +779,26 @@
 
 
         <!-- Main Content -->
-
-        <!-- Title and Clues -->
-        <div class="clues-section">
-
-            <h1 class="title">ՍՄԱՐՏԱՄՍՅԱԿ</h1>
-
-            <div class="clue-item">
-                <div class="clue-number">1</div>
-                <p class="clue-text">
-                    Հանրահայտ Լայվ Կազինո խաղ, որտեղ պայքարն ընթանում է «Խաղացողի» և «Բանկիրի» միջև:
-                </p>
-            </div>
-
-            <div class="clue-item">
-                <div class="clue-number">2</div>
-                <p class="clue-text">
-                    Հատուկ սիմվոլ սլոթերում, որը կարող է փոխարինել գրեթե ցանկացած այլ նշանի՝ հաղթական համակցություն կազմելու համար:
-                </p>
-            </div>
-
-            <div class="clue-item">
-                <div class="clue-number">3</div>
-                <p class="clue-text">Գործողություն, երբ խաղացողը գումար է մուտքագրում իր խաղային հաշվին:</p>
-            </div>
-
-        </div>
-
+   
 
 
         <!-- Crossword Grid -->
-        <div class="crossword-section">
+        <!-- <div class="crossword-section">
 
             <div class="container">
                 <div class="crossword"></div>
             </div>
-        </div>
+        </div> -->
 
         <!-- ID Input Section -->
         <div class="input-section">
-            <label class="input-label" for="id-number">Լրացրու քո ID-ն</label>
+           <div class="title-section">
+            <h1 class="title">ՄՐՑՈՒՅԹ</h1>
+            <p class="clue-text">
+                5000֏ ֆրիբեթեր
+            </p>
+           </div>
+            <!-- <label class="input-label" for="id-number">Լրացրու քո ID-ն</label> -->
 
             <div class="input-wrapper">
                 <input type="text" id="id-number" class="id-input" placeholder="ID" maxlength="9" inputmode="numeric"
@@ -726,16 +810,44 @@
         <input type="file" id="imageInput" accept="image/*" style="display: none;" />
         
         <!-- Image Upload Button -->
-        <div class="button-section" style="padding: 0 16px; margin-top: 8px;">
-            <button type="button" class="submit-btn" style="background-color: #fbe10a; opacity: 0.8;" onclick="document.getElementById('imageInput').click()">
-                📸 Տեղաբերել լուսանկար
+        <div class="button-section">
+            <button type="button" class=" upload-btn" onclick="document.getElementById('imageInput').click()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_112_1245)">
+                        <path
+                            d="M22.2028 9.84371C21.5466 9.35714 20.7403 8.99996 19.8891 8.8073C19.7493 8.77586 19.6213 8.7053 19.5202 8.60388C19.419 8.50245 19.3488 8.37433 19.3177 8.23449C18.952 6.60558 18.165 5.20871 17.0081 4.15027C15.6633 2.91792 13.8848 2.24011 12 2.24011C10.343 2.24011 8.8125 2.75949 7.57641 3.74246C6.73867 4.4097 6.06434 5.25942 5.60484 6.22683C5.55503 6.33268 5.48114 6.42541 5.38908 6.4976C5.29703 6.5698 5.18936 6.61946 5.07469 6.64261C3.82078 6.89574 2.68875 7.43339 1.82437 8.19511C0.630937 9.2498 0 10.6518 0 12.2526C0 13.8707 0.679219 15.3464 1.91203 16.4132C3.08953 17.43 4.67484 17.9901 6.375 17.9901H11.25V10.8009L9.53016 12.5207C9.45835 12.5925 9.37272 12.649 9.27845 12.6867C9.18418 12.7244 9.08323 12.7426 8.98172 12.7402C8.88021 12.7377 8.78026 12.7147 8.68792 12.6724C8.59558 12.6302 8.51278 12.5697 8.44453 12.4945C8.17266 12.1959 8.19891 11.7304 8.48438 11.445L11.4698 8.45996C11.6105 8.31941 11.8012 8.24046 12 8.24046C12.1988 8.24046 12.3895 8.31941 12.5302 8.45996L15.5156 11.444C15.81 11.7389 15.8269 12.2221 15.5339 12.5179C15.4644 12.5881 15.3817 12.6439 15.2906 12.6821C15.1995 12.7202 15.1017 12.74 15.0029 12.7402C14.9041 12.7405 14.8063 12.7212 14.715 12.6836C14.6236 12.6459 14.5407 12.5906 14.4708 12.5207L12.75 10.8009V17.9901H18.5625C20.0316 17.9901 21.3708 17.5776 22.3336 16.829C23.4239 15.9806 24 14.7665 24 13.3214C24 11.9179 23.3784 10.7146 22.2028 9.84371Z"
+                            fill="#969696" />
+                        <path
+                            d="M11.25 21.0098C11.25 21.2087 11.329 21.3995 11.4697 21.5401C11.6103 21.6808 11.8011 21.7598 12 21.7598C12.1989 21.7598 12.3897 21.6808 12.5303 21.5401C12.671 21.3995 12.75 21.2087 12.75 21.0098V17.9901H11.25V21.0098Z"
+                            fill="#969696" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_112_1245">
+                            <rect width="24" height="24" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+
+                <span>Կցի՛ր նկարը</span>
             </button>
+            <div class="image-preview-row" id="imagePreviewRow">
+                <img id="imagePreviewThumb" src="" alt="Preview" />
+                <div class="preview-text" id="previewFileName"></div>
+                <button type="button" class="clear-image" onclick="clearImageSelection()">
+                    <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect width="23" height="23" rx="11.5" fill="#D3D3D3" />
+                        <path d="M16.4121 6.58793L6.58793 16.4121M6.58789 6.58789L16.4121 16.4121" stroke="white" stroke-width="1.5"
+                            stroke-linecap="round" />
+                    </svg>
+
+                </button>
+            </div>
             <small id="imageStatus" style="text-align: center; color: #fbe10a; font-size: 12px; margin-top: 4px;"></small>
         </div>
 
         <!-- Submit Button -->
         <div class="button-section">
-            <button class="submit-btn" onclick="sendData()">Ուղարկել</button>
+            <button class="submit-btn" onclick="sendData()" disabled>Ուղարկել</button>
             <div id="msg" class="msg"></div>
 
             <!-- Disclaimer -->
@@ -743,15 +855,15 @@
                 <div class="age-badge">
                     <svg width="31" height="31" viewBox="0 0 31 31" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
-                            d="M26.4768 21.2038C24.9183 24.1257 22.3501 26.3809 19.2513 27.5486C16.1524 28.7164 12.7346 28.7171 9.63537 27.5505C6.5361 26.3839 3.96703 24.1298 2.40737 21.2085C0.847718 18.2872 0.403989 14.8983 1.15896 11.674C1.91393 8.44966 3.81604 5.61005 6.51048 3.68486C9.20491 1.75967 12.5077 0.88037 15.8027 1.21098C19.0977 1.5416 22.1599 3.05955 24.4182 5.48168C25.4372 6.5747 26.2612 7.81816 26.8677 9.15788"
-                            stroke="white" stroke-width="1.07889" />
+                            d="M26.4768 21.2038C24.9182 24.1257 22.3501 26.3808 19.2512 27.5486C16.1524 28.7164 12.7346 28.7171 9.63537 27.5505C6.5361 26.3839 3.96703 24.1298 2.40737 21.2085C0.847716 18.2872 0.403988 14.8983 1.15896 11.674C1.91393 8.44964 3.81603 5.61003 6.51047 3.68484C9.20491 1.75965 12.5077 0.880355 15.8027 1.21097C19.0977 1.54158 22.1599 3.05953 24.4182 5.48166C25.4372 6.57468 26.2611 7.81815 26.8677 9.15787"
+                            stroke="#FF0000" stroke-width="1.07889" />
                         <path
                             d="M13.7071 19.1676V20.3846H7.18972V19.3197L10.4004 15.0682C10.7954 14.5451 11.0969 14.1021 11.3051 13.7391C11.5133 13.3708 11.6574 13.0425 11.7375 12.7543C11.8175 12.4607 11.8576 12.1618 11.8576 11.8575C11.8576 11.4732 11.7962 11.1263 11.6734 10.8167C11.5507 10.5018 11.3718 10.2509 11.137 10.0641C10.9021 9.87724 10.6192 9.78383 10.2883 9.78383C9.85592 9.78383 9.50096 9.88525 9.2234 10.0881C8.95117 10.2856 8.75101 10.5631 8.6229 10.9208C8.4948 11.2784 8.43074 11.6894 8.43074 12.1538H7.01357C7.01357 11.4972 7.13367 10.8967 7.37387 10.3523C7.61941 9.80785 7.98504 9.37549 8.47078 9.05523C8.95651 8.72963 9.56234 8.56683 10.2883 8.56683C10.9128 8.56683 11.4466 8.6976 11.8896 8.95915C12.338 9.21536 12.6796 9.57833 12.9144 10.048C13.1546 10.5124 13.2747 11.0569 13.2747 11.6814C13.2747 12.023 13.2267 12.37 13.1306 12.7223C13.0399 13.0692 12.9118 13.4162 12.7463 13.7631C12.5862 14.1101 12.3967 14.4517 12.1778 14.788C11.959 15.1242 11.7241 15.4552 11.4733 15.7808L8.88712 19.1676H13.7071ZM19.8398 8.66291V20.3846H18.4227V10.5124L15.9726 11.6013V10.2642L19.6237 8.66291H19.8398Z"
-                            fill="white" />
-                        <path
-                            d="M30.8476 14.4656V15.5064H24.5067V14.4656H30.8476ZM28.1586 11.9232V18.2641H27.1169V11.9232H28.1586Z"
-                            fill="white" />
+                            fill="#FF0000" />
+                        <path d="M30.8476 14.4656V15.5065H24.5067V14.4656H30.8476ZM28.1586 11.9232V18.2641H27.1169V11.9232H28.1586Z"
+                            fill="#FF0000" />
                     </svg>
+
                 </div>
                 <p class="disclaimer-text">Նախազգուշացում. խաղին մասնակցելով` կարող եք կրել նյութական վնասներ: Ոչ սթափ
                     կամ հոգեճնշող վիճակում խաղալն անթույլատրելի է:</p>
@@ -770,16 +882,8 @@
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
-    function collectData(inputSelector) {
-        let answer = ""
-
-        const answerValue = document.querySelectorAll(`${inputSelector}`)
-        answerValue.forEach(item => {
-            answer += item.value
-        })
-
-        return answer
-    }
+  
+    let isImageValid = false;
 
     function fileToBase64(file) {
         return new Promise((resolve, reject) => {
@@ -800,22 +904,56 @@
             if (!validTypes.includes(file.type)) {
                 imageStatus.textContent = '❌ Invalid file type. Please upload an image.';
                 event.target.value = '';
+                document.getElementById('imagePreviewRow').classList.remove('show');
+                document.getElementById('imagePreviewThumb').src = '';
+                document.getElementById('previewFileName').textContent = '';
+                isImageValid = false;
+                updateSubmitButtonState();
                 return;
             }
             
-            const maxSizeMB = 5;
+            const maxSizeMB = 2;
             if (file.size > maxSizeMB * 1024 * 1024) {
-                imageStatus.textContent = `❌ File too large. Max ${maxSizeMB}MB allowed.`;
+                imageStatus.textContent = 'Նկարը մեծ է: Ընտրիր մինչև 2 ՄԲ տարբերակ';
                 event.target.value = '';
+                document.getElementById('imagePreviewRow').classList.remove('show');
+                document.getElementById('imagePreviewThumb').src = '';
+                document.getElementById('previewFileName').textContent = '';
+                isImageValid = false;
+                updateSubmitButtonState();
                 return;
             }
             
             const sizeMB = (file.size / 1024 / 1024).toFixed(2);
-            imageStatus.textContent = `✅ Image selected: ${file.name} (${sizeMB}MB)`;
+            imageStatus.textContent = ``;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreviewThumb').src = e.target.result;
+                document.getElementById('previewFileName').textContent = file.name;
+                document.getElementById('imagePreviewRow').classList.add('show');
+            };
+            reader.readAsDataURL(file);
+            isImageValid = true;
+            updateSubmitButtonState();
         } else {
             imageStatus.textContent = '';
+            document.getElementById('imagePreviewRow').classList.remove('show');
+            isImageValid = false;
+            updateSubmitButtonState();
         }
     });
+
+    function clearImageSelection() {
+        const imageInput = document.getElementById('imageInput');
+        const imageStatus = document.getElementById('imageStatus');
+        imageInput.value = '';
+        imageStatus.textContent = '';
+        document.getElementById('imagePreviewRow').classList.remove('show');
+        document.getElementById('imagePreviewThumb').src = '';
+        document.getElementById('previewFileName').textContent = '';
+        isImageValid = false;
+        updateSubmitButtonState();
+    }
 
 
     async function sendData() {
@@ -831,10 +969,6 @@
             return;
         }
 
-        // Collect crossword answers
-        let answer1 = collectData('[data-across="1"]').toLowerCase();
-        let answer2 = collectData('[data-down="2"]').toLowerCase();
-        let answer3 = collectData('[data-across="3"]').toLowerCase();
 
         // Get image file
         const file = document.querySelector("#imageInput")?.files?.[0];
@@ -856,16 +990,14 @@
 
         const data = {
             userId: userId,
-            answer1,
-            answer2,
-            answer3,
+           
             ts: new Date().toISOString(),
             image: imageBase64
         };
 
         // Disable button during submission
         submitBtn.disabled = true;
-        msgDiv.textContent = '⏳ Submitting...';
+        msgDiv.textContent = 'Ուղարկվում է...';
         msgDiv.style.color = '#fbe10a';
 
         try {
@@ -899,325 +1031,17 @@
 
 <script>
 
-    const generateStars = (n)=> '*'.repeat(n)
-
-    var words = [
-        { number: 1, direction: 'across', row: 2, column: 1, clue: '', answer: generateStars(7), hint: 'http://www.angelo.edu/asu_facts/history.php' },
-        { number: 2, direction: 'down', row: 1, column: 2, clue: '', answer: generateStars(5), hint: 'http://www.angelo.edu/services/ticket_office/softball.php' },
-        { number: 3, direction: 'across', row: 5, column: 2, clue: '', answer: generateStars(7), hint: 'http://www.angelo.edu/services/specialevents/hhuc.php' },
-
-    ];
-
-    // Set global variables
-    var gridSize = [8, 5];     // first width second argument height
-    var direction = 'across';   // set initial direction to 'across'
-    var markCorrect = true;     // indicates ability for answers to be marked correct. will be set to false if "show answers" is clicked
-    var successShown = false;   // indicates whether the success modal has been shown
-    var $clueTooltip = $('<div class="clue-tooltip invisible"><div class="clue-tooltip-arrow"></div><div class="clue-tooltip-text"></div></div>').appendTo('.crossword');
-
-    // set up the base grid
-    var $crosswordPuzzle = $('<div class="crossword-puzzle col-md-8 col-lg-9"></div>');
-    var $table = $('<table class="crossword-grid"></table>');
-    for (i = 0; i < gridSize[1]; i++) {
-        var $row = $('<tr class="grid-row"></tr>');
-        for (j = 0; j < gridSize[0]; j++) {
-            $square = $('<td class="grid-square"></td>');
-            $square.appendTo($row);
-        }
-        $row.appendTo($table);
-        $table.appendTo($crosswordPuzzle);
-        $crosswordPuzzle.appendTo('.crossword');
-    }
-
-    // Add the fields to the grid
-    for (i = 0; i < words.length; i++) {
-        var row = words[i].row;
-        var column = words[i].column;
-        for (j = 0; j < words[i].answer.length; j++) {
-            var $square = $('.grid-row').eq(row - 1).find('.grid-square').eq(column - 1);
-            var title = words[i].clue + ', letter ' + (j + 1) + ' of ' + words[i].answer.length;
-            var id = (words[i].direction == 'across' ? 'a' : 'd') + '-' + words[i].number + '-' + (j + 1);
-            if (j == 0 && $square.find('.word-label').length == 0) {
-                $('<span class="word-label">' + words[i].number + '</span>').appendTo($square);
-            }
-            if ($square.find('input').length == 0) {
-                var $input = $('<input type="text" class="letter"  placeholder=" " title="' + title + '" id="' + id + '" maxlength="1" />');
-                if (words[i].direction == 'across') {
-                    $input.attr('data-across', words[i].number);
-                    $input.attr('data-across-clue', words[i].clue);
-                } else {
-                    $input.attr('data-down', words[i].number);
-                    $input.attr('data-down-clue', words[i].clue);
-                }
-                $input.data('letter', words[i].answer[j]);
-                $input.appendTo($square);
-                $square.addClass('active');
-            } else {
-                var $input = $square.find('input');
-                $input.attr('title', $input.attr('title') + '; ' + title);
-                $input.attr('id', $input.attr('id') + '+' + id);
-                if (words[i].direction == 'across') {
-                    $input.attr('data-across', words[i].number);
-                    $input.attr('data-across-clue', words[i].clue);
-                } else {
-                    $input.attr('data-down', words[i].number);
-                    $input.attr('data-down-clue', words[i].clue);
-                }
-            }
-            if (words[i].direction == 'down') {
-                row++;
-            } else {
-                column++;
-            }
-        }
-    }
-
-    // Add the clues to the page
-    var $crosswordClues = $('<div class="crossword-clues col-md-4 col-lg-3"><div class="row"></div></div>');
-    var $acrossClues = $('<div class="across-clues col-sm-6 col-md-12"><p><strong>Across</strong></p><ol></ol></div>');
-    var $downClues = $('<div class="down-clues col-sm-6 col-md-12"><p><strong>Down</strong></p><ol></ol></div>');
-    for (i = 0; i < words.length; i++) {
-        var $clue = $('<li value="' + words[i].number + '" data-direction="' + words[i].direction + '" data-clue="' + words[i].number + '"><label>' + words[i].clue + ' </label></li>');
-        $clue.find('label').attr('for', $('[data-' + words[i].direction + '=' + words[i].number + ']').eq(0).attr('id'));
-        $clue.on('click', function () {
-            direction = $(this).data('direction');
-        })
-        if (words[i].hint.length > 0 && words[i].hint != '') {
-            $('<a class="hint" href="' + words[i].hint + '" target="_blank" title="Hint for ' + words[i].number + ' ' + words[i].direction + '">(Hint)</a>').appendTo($clue.find('label'));
-        }
-        if (words[i].direction == 'across') {
-            $clue.appendTo($acrossClues.find('ol'));
-        } else {
-            $clue.appendTo($downClues.find('ol'));
-        }
-    }
-    $acrossClues.appendTo($crosswordClues.find('.row'));
-    $downClues.appendTo($crosswordClues.find('.row'));
-    $crosswordClues.appendTo('.crossword');
-
-    // Add the hints, reset, and show answers buttons
-    // var $puzzleButtons = $('<div class="crossword-buttons"></div>');
-    var $hintsButton = $('<button class="btn btn-default">Show Hints</button>');
-    $hintsButton.on('click', function (e) {
-        e.preventDefault();
-        $('.crossword-clues').toggleClass('show-hints');
-        $(this).text($(this).text() == 'Show Hints' ? 'Hide Hints' : 'Show Hints');
-    });
-    // $hintsButton.appendTo($puzzleButtons);
-    var $resetButton = $('<button class="btn btn-default">Clear Puzzle</button>');
-    $resetButton.on('click', function (e) {
-        e.preventDefault();
-        $('input.letter').val('').parent('.grid-square').removeClass('correct-down correct-across');
-        $('.crossword-clues li').removeClass('correct');
-        markCorrect = true;
-    });
-    // $resetButton.appendTo($puzzleButtons);
-    var $solveButton = $('<button class="show-answers btn btn-default">Show Answers</button>');
-    $solveButton.on('click', function (e) {
-        e.preventDefault();
-        $('input.letter').each(function () {
-            $(this).val($(this).data('letter'));
-        });
-        markCorrect = false;
-    });
-    //     $solveButton.appendTo($puzzleButtons);
-    // $puzzleButtons.appendTo('.crossword');
-
-    // Add the success modal
-    // var $modal = $('<div class="modal fade" id="success-modal" tabindex="-1" role="dialog"><div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title">Congratulations!</h4></div><div class="modal-body"><p>You have finished the puzzle.</p></div></div></div></div>');
-    // $modal.appendTo('body');
-
-    // When a square is focused, highlight the other squares in that word and the clue, and show the tooltip
-    $('input.letter').on('focus', function () {
-        var $current = $(this);
-        $current.select();
-        $current[0].setSelectionRange(0, 10);
-        getDirection($current);
-        $('[data-' + direction + '=' + $current.data(direction) + ']').parent('.grid-square').addClass('current-word');
-        $('.crossword-clues li').removeClass('active');
-        $('.crossword-clues li[data-direction=' + direction + '][data-clue=' + $(this).data(direction) + ']').addClass('active');
-        $clueTooltip.css({ 'left': tooltipPosition($current).left + 'px', 'top': tooltipPosition($current).top - 10 + 'px' }).removeClass('invisible').find('.clue-tooltip-arrow').css('left', tooltipPosition($current).offset + 'px');
-    })
-
-    // When a square is blurred, remove highlight from squares and clue
-    $('input.letter').on('blur', function () {
-        $('.grid-square').removeClass('current-word');
-        $('.crossword-clues li').removeClass('active');
-        $clueTooltip.addClass('invisible');
-    })
-
+  
    
-
-    $('input.letter').on('input', function (e) {
-        var $current = $(this);
-
-        // Allow only 1 character
-        this.value = this.value.slice(0, 1);
-
-        if (this.value !== '') {
-            if (direction === 'across') {
-                if (getNextLetter($current)) {
-                    getNextLetter($current).focus();
-                }
-            } else if (direction === 'down') {
-                if (getNextLetter($current)) {
-                    getNextLetter($current).focus();
-                }
-            }
-        }
-
-        if (markCorrect) {
-            checkWord($current);
-        }
-    });
-
-    // Tab and Shift/Tab move to next and previous words
-    $('input.letter').on('keydown', function (e) {
-        var $current = $(this);
-        if (e.which == 9) {       // tab
-            e.preventDefault();
-            if (e.shiftKey) {       // shift/tab
-                getPrevWord($current).focus();
-            } else {
-                getNextWord($current).focus();
-            }
-        } else if (e.which == 8) {        // backspace
-            e.preventDefault();
-            if ($(this).val().length > 0) {
-                $(this).val('');
-            } else {
-                if (getPrevLetter($current)) {
-                    getPrevLetter($current).focus().val('');
-                }
-            }
-        } else if ((e.which >= 48 && e.which <= 90) || (e.which >= 96 && e.which <= 111) || (e.which >= 186 && e.which <= 192) || (e.which >= 219 && e.which <= 222)) {    // typeable characters move to the next square in the word if it exists
-            e.preventDefault();
-            $current.val(String.fromCharCode(e.which));
-            if (getNextLetter($current)) {
-                getNextLetter($current).focus();
-            }
-        }
-        if (markCorrect) {
-            checkWord($current);
-        };
-    })
-
-    // Check if all letters in selected word are correct
-    function checkWord($current) {
-        var correct;
-        var currentWord;
-        if ($current.is('[data-across]')) {
-            correct = 0;
-            currentWord = $current.data('across');
-            $('[data-across=' + currentWord + ']').each(function () {
-                if ($(this).val().toLowerCase() == $(this).data('letter').toLowerCase()) {
-                    correct += 1;
-                }
-            })
-            if (correct == $('[data-across=' + currentWord + ']').length) {
-                $('[data-across=' + currentWord + ']').parent('.grid-square').addClass('correct-across');
-                $('.crossword-clues li[data-direction=across][data-clue=' + currentWord + ']').addClass('correct');
-            } else {
-                $('[data-across=' + currentWord + ']').parent('.grid-square').removeClass('correct-across');
-                $('.crossword-clues li[data-direction=across][data-clue=' + currentWord + ']').removeClass('correct');
-            }
-        }
-        if ($current.is('[data-down]')) {
-            correct = 0;
-            currentWord = $current.data('down');
-            $('[data-down=' + currentWord + ']').each(function () {
-                if ($(this).val().toLowerCase() == $(this).data('letter').toLowerCase()) {
-                    correct += 1;
-                }
-            })
-            if (correct == $('[data-down=' + currentWord + ']').length) {
-                $('[data-down=' + currentWord + ']').parent('.grid-square').addClass('correct-down');
-                $('.crossword-clues li[data-direction=down][data-clue=' + currentWord + ']').addClass('correct');
-            } else {
-                $('[data-down=' + currentWord + ']').parent('.grid-square').removeClass('correct-down');
-                $('.crossword-clues li[data-direction=down][data-clue=' + currentWord + ']').removeClass('correct');
-            }
-        }
-        if ($('.grid-square.active:not([class*=correct])').length == 0 && !successShown) {
-            // $('#success-modal').modal();
-            successShown = true;
-        }
-    }
-
-    // Return the input of the first letter of the next word in the clues list
-    function getNextWord($current) {
-        var length = $('.crossword-clues li').length;
-        var index = $('.crossword-clues li').index($('.crossword-clues li.active'));
-        var nextWord;
-        if (index < length - 1) {
-            $nextWord = $('.crossword-clues li').eq(index + 1);
-        } else {
-            $nextWord = $('.crossword-clues li').eq(0);
-        }
-        direction = $nextWord.data('direction');
-        return $('[data-' + $nextWord.data('direction') + '=' + $nextWord.data('clue') + ']').eq(0);
-    }
-
-    // Return the input of the first letter of the previous word in the clues list
-    function getPrevWord($current) {
-        var length = $('.crossword-clues li').length;
-        var index = $('.crossword-clues li').index($('.crossword-clues li.active'));
-        var prevWord;
-        if (index > 0) {
-            $prevWord = $('.crossword-clues li').eq(index - 1);
-        } else {
-            $prevWord = $('.crossword-clues li').eq(length - 1);
-        }
-        direction = $prevWord.data('direction');
-        return $('[data-' + $prevWord.data('direction') + '=' + $prevWord.data('clue') + ']').eq(0);
-    }
-
-    // If there is a letter square before or after the current letter in the current direction, keep global direction the same, otherwise switch global direction
-    function getDirection($current) {
-        if (getPrevLetter($current) || getNextLetter($current)) {
-            direction = direction;
-        } else {
-            direction = (direction == 'across') ? 'down' : 'across';
-        }
-    }
-
-    // Return the input of the previous letter in the current word if it exists, otherwise return false
-    function getPrevLetter($current) {
-        var index = $('[data-' + direction + '=' + $current.data(direction) + ']').index($current);
-        if (index > 0) {
-            return $('[data-' + direction + '=' + $current.data(direction) + ']').eq(index - 1);
-        } else {
-            return false;
-        }
-    }
-
-    // Return the input of the next letter in the current word if it exists, otherwise return false
-    function getNextLetter($current) {
-        var length = $('[data-' + direction + '=' + $current.data(direction) + ']').length;
-        var index = $('[data-' + direction + '=' + $current.data(direction) + ']').index($current);
-        if (index < length - 1) {
-            return $('[data-' + direction + '=' + $current.data(direction) + ']').eq(index + 1);
-        } else {
-            return false;
-        }
-    }
-
-    // Return the top, left, and offset positions for tooltip placement
-    function tooltipPosition($current) {
-        var left = $('[data-' + direction + '=' + $current.data(direction) + ']').eq(0).offset().left - $('.crossword').offset().left;
-        var top = $('[data-' + direction + '=' + $current.data(direction) + ']').eq(0).offset().top - $('.crossword').offset().top;
-        $clueTooltip.find('.clue-tooltip-text').text($current.data(direction + '-clue'));
-        var right = left + $clueTooltip.outerWidth();
-        var offset = right - $('.crossword-puzzle').outerWidth();
-        offset = offset > 0 ? offset : 0;
-        left = left - offset;
-        return { 'left': left, 'top': top, 'offset': offset };
-    }
-
 
     const input = document.getElementById("id-number");
     const errorDiv = document.querySelector(".error-message");
     const submitBtn = document.querySelector(".submit-btn");
+
+    function updateSubmitButtonState() {
+        const isIdValid = input.value.length === 9 && !input.value.startsWith("0");
+        submitBtn.disabled = !(isIdValid && isImageValid);
+    }
 
     submitBtn.disabled = true;
 
@@ -1239,26 +1063,26 @@
         if (!value) {
             input.setCustomValidity("Պահանջվում է ID։");
             errorDiv.textContent = "Պահանջվում է ID և միայն թվեր։";
-            submitBtn.disabled = true;
+            updateSubmitButtonState();
             return;
         }
 
         if (value.length !== 9) {
             input.setCustomValidity("ID-ն պետք է լինի ճիշտ 9 թվանշան։");
             errorDiv.textContent = "ID-ն պետք է լինի ճիշտ 9 թվանշան։";
-            submitBtn.disabled = true;
+            updateSubmitButtonState();
             return;
         }
 
         if (value.startsWith("0")) {
             input.setCustomValidity("ID-ն չի կարող սկսվել 0-ով։");
             errorDiv.textContent = "ID-ն չի կարող սկսվել 0-ով։";
-            submitBtn.disabled = true;
+            updateSubmitButtonState();
             return;
         }
 
-        // valid
-        submitBtn.disabled = false;
+        // valid - updateSubmitButtonState will enable button if image is also valid
+        updateSubmitButtonState();
     }
 
     // const wordLabels = document.querySelectorAll('.grid-square span.word-label')
