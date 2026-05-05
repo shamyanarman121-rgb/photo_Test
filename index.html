@@ -295,6 +295,7 @@
 
         .title-section{
             margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
          .title-section h1{
@@ -793,9 +794,9 @@
         <!-- ID Input Section -->
         <div class="input-section">
            <div class="title-section">
-            <h1 class="title">ՄՐՑՈՒՅԹ</h1>
+            <h1 class="title">Բեթ արա ու կիսվիր</h1>
             <p class="clue-text">
-                5000֏ ֆրիբեթեր
+                ՓՈՐՁԻՐ ՇԱՀԵԼ
             </p>
            </div>
             <!-- <label class="input-label" for="id-number">Լրացրու քո ID-ն</label> -->
@@ -912,9 +913,9 @@
                 return;
             }
             
-            const maxSizeMB = 2;
+            const maxSizeMB = 14;
             if (file.size > maxSizeMB * 1024 * 1024) {
-                imageStatus.textContent = 'Նկարը մեծ է: Ընտրիր մինչև 2 ՄԲ տարբերակ';
+                imageStatus.textContent = 'Նկարը մեծ է: Ընտրիր մինչև 14 ՄԲ տարբերակ';
                 event.target.value = '';
                 document.getElementById('imagePreviewRow').classList.remove('show');
                 document.getElementById('imagePreviewThumb').src = '';
