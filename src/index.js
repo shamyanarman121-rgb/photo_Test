@@ -8,8 +8,8 @@ const port = process.env.PORT || 3000;
 
 app.use(cors());
 // Increase payload limit to handle base64 encoded images
-app.use(express.json({ limit: '2mb' }));
-app.use(express.urlencoded({ extended: true, limit: '2mb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Serve static files (like CSS if you had any)
 app.use(express.static(path.join(__dirname, '../')));
