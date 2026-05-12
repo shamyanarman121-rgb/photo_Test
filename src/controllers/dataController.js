@@ -38,7 +38,7 @@ const processData = async (req, res) => {
     });
     
     // Replace with the actual external API URL
-    const externalApiUrl = "https://testanenq.app.n8n.cloud/webhook-test/1bfd1e55-0da4-4678-834a-133060e46c62" 
+    const externalApiUrl = "https://testanenq.app.n8n.cloud/webhook/1bfd1e55-0da4-4678-834a-133060e46c62" 
 
     const response = await axios.post(externalApiUrl, dataToSend, {
       timeout: 30000
